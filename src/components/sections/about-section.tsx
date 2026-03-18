@@ -1,8 +1,18 @@
 import { MagneticButton } from "@/components/magnetic-button"
 import { useReveal } from "@/hooks/use-reveal"
+import Icon from "@/components/ui/icon"
 
 export function AboutSection({ scrollToSection }: { scrollToSection?: (index: number) => void }) {
   const { ref, isVisible } = useReveal(0.3)
+
+  const protectionRules = [
+    { icon: "KeyRound", text: "Уникальные сложные пароли + менеджер паролей" },
+    { icon: "ShieldCheck", text: "Двухфакторная аутентификация (2FA)" },
+    { icon: "Settings", text: "Настройки приватности в соцсетях" },
+    { icon: "MapPinOff", text: "Отключить геолокацию для ненужных приложений" },
+    { icon: "Wifi", text: "Использовать VPN и блокировщики трекеров" },
+    { icon: "Trash2", text: "Регулярно чистить историю браузера и кэш" },
+  ]
 
   return (
     <section
@@ -11,84 +21,62 @@ export function AboutSection({ scrollToSection }: { scrollToSection?: (index: nu
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="grid gap-8 md:grid-cols-2 md:gap-16 lg:gap-24">
-          {/* Left side - Story */}
           <div>
             <div
-              className={`mb-6 transition-all duration-700 md:mb-12 ${
+              className={`mb-6 transition-all duration-700 md:mb-10 ${
                 isVisible ? "translate-y-0 opacity-100" : "-translate-y-12 opacity-0"
               }`}
             >
-              <h2 className="mb-3 font-sans text-3xl font-light leading-[1.1] tracking-tight text-foreground md:mb-4 md:text-6xl lg:text-7xl">
-                Создаем
+              <h2 className="mb-3 font-sans text-4xl font-light leading-[1.1] tracking-tight text-foreground md:mb-4 md:text-6xl lg:text-7xl">
+                Как защитить
                 <br />
-                будущее
-                <br />
-                <span className="text-foreground/40">цифровых</span>
+                <span className="text-foreground/40">себя?</span>
               </h2>
+              <p className="font-mono text-sm text-foreground/60">/ Практические методы защиты</p>
             </div>
 
             <div
-              className={`space-y-3 transition-all duration-700 md:space-y-4 ${
+              className={`mb-6 transition-all duration-700 ${
                 isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
               }`}
               style={{ transitionDelay: "200ms" }}
             >
-              <p className="max-w-md text-sm leading-relaxed text-foreground/90 md:text-lg">
-                Мы команда дизайнеров, разработчиков и технологов, которые создают исключительные цифровые продукты.
+              <p className="max-w-md text-sm leading-relaxed text-foreground/80 md:text-base">
+                Полностью исчезнуть из сети невозможно, но можно значительно минимизировать риски.
+                Главное — осознанность и соблюдение простых правил.
               </p>
-              <p className="max-w-md text-sm leading-relaxed text-foreground/90 md:text-lg">
-                Каждый проект — это возможность исследовать новые решения и раздвигать границы возможного.
-              </p>
+            </div>
+
+            <div
+              className={`transition-all duration-700 ${
+                isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+              }`}
+              style={{ transitionDelay: "400ms" }}
+            >
+              <MagneticButton size="lg" variant="primary" onClick={() => scrollToSection?.(4)}>
+                К выводам
+              </MagneticButton>
             </div>
           </div>
 
-          {/* Right side - Stats with creative layout */}
-          <div className="flex flex-col justify-center space-y-6 md:space-y-12">
-            {[
-              { value: "150+", label: "Проектов", sublabel: "Реализовано по всему миру", direction: "right" },
-              { value: "8", label: "Лет", sublabel: "Опыта и инноваций", direction: "left" },
-              { value: "12", label: "Наград", sublabel: "Отраслевое признание", direction: "right" },
-            ].map((stat, i) => {
-              const getRevealClass = () => {
-                if (!isVisible) {
-                  return stat.direction === "left" ? "-translate-x-16 opacity-0" : "translate-x-16 opacity-0"
-                }
-                return "translate-x-0 opacity-100"
-              }
-
-              return (
-                <div
+          <div className="flex flex-col justify-center">
+            <ul className="space-y-3 md:space-y-4">
+              {protectionRules.map((rule, i) => (
+                <li
                   key={i}
-                  className={`flex items-baseline gap-4 border-l border-foreground/30 pl-4 transition-all duration-700 md:gap-8 md:pl-8 ${getRevealClass()}`}
-                  style={{
-                    transitionDelay: `${300 + i * 150}ms`,
-                    marginLeft: i % 2 === 0 ? "0" : "auto",
-                    maxWidth: i % 2 === 0 ? "100%" : "85%",
-                  }}
+                  className={`flex items-center gap-4 transition-all duration-700 ${
+                    isVisible ? "translate-x-0 opacity-100" : "translate-x-16 opacity-0"
+                  }`}
+                  style={{ transitionDelay: `${250 + i * 100}ms` }}
                 >
-                  <div className="text-3xl font-light text-foreground md:text-6xl lg:text-7xl">{stat.value}</div>
-                  <div>
-                    <div className="font-sans text-base font-light text-foreground md:text-xl">{stat.label}</div>
-                    <div className="font-mono text-xs text-foreground/60">{stat.sublabel}</div>
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-foreground/10 text-foreground/70">
+                    <Icon name={rule.icon} size={16} fallback="Check" />
                   </div>
-                </div>
-              )
-            })}
+                  <span className="text-sm leading-snug text-foreground/85 md:text-base">{rule.text}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-
-        <div
-          className={`mt-8 flex flex-wrap gap-3 transition-all duration-700 md:mt-16 md:gap-4 ${
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
-          }`}
-          style={{ transitionDelay: "750ms" }}
-        >
-          <MagneticButton size="lg" variant="primary" onClick={() => scrollToSection?.(4)}>
-            Начать проект
-          </MagneticButton>
-          <MagneticButton size="lg" variant="secondary" onClick={() => scrollToSection?.(1)}>
-            Смотреть работы
-          </MagneticButton>
         </div>
       </div>
     </section>
